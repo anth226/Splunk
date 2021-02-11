@@ -1,5 +1,5 @@
 import React from "react";
-import "./Panel.css";
+import { Layer } from 'react-konva';
 import PanelEntity from "./PanelEntity/PanelEntity";
 
 const getWraper = (panels) => {
@@ -58,54 +58,55 @@ const getCssValue = (styles, name) => {
 };
 
 const Panel = ({ children, panels }) => {
-  if (!panels) return <div className="entity-field">{children}</div>;
+  let topX = 0, leftY = 0, rightY = 0, bottomX = 0;
+
+  if (!panels) return <Layer></Layer>;
   const { left, right, bottom, top } = panels;
   let wraper = getWraper(panels);
 
   return (
-    <div
-      className="upper-wrapper"
-      style={{
-        width: `${wraper.wrapWidth}px`,
-        height: `${wraper.wrapHeight}px`,
-      }}
-    >
+    <>
       {Boolean(top) && top.length && (
-        <div className="top-side">
-          {top.map((panel, index) => (
-            <PanelEntity key={index} panel={panel} />
-          ))}
-        </div>
+        <Layer>
+          {top.map((panel, index) => {
+            topX = topX + getCssValue(panel.styles, "width");
+            return (
+              <PanelEntity key={index} panel={panel} x={topX - getCssValue(panel.styles, "width") + index * 10} y={10} />
+            );
+          })}
+        </Layer>
       )}
-      <div
-        className="entity-field"
-        style={{ marginLeft: `${wraper.leftMargin}px`, marginRight: `${wraper.rightMargin}px` }}
-      >
-        {children}
-      </div>
       {Boolean(left) && left.length && (
-        <div className="left-side">
-          {left.map((panel, index) => (
-            <PanelEntity key={index} panel={panel} />
-          ))}
-        </div>
-      )}
-
-      {Boolean(bottom) && bottom.length && (
-        <div className="bottom-side">
-          {bottom.map((panel, index) => (
-            <PanelEntity key={index} panel={panel} />
-          ))}
-        </div>
+        <Layer>
+          {left.map((panel, index) => {
+            leftY = leftY + getCssValue(panel.styles, "height");
+            return (
+              <PanelEntity key={index} panel={panel} x={10} y={leftY - getCssValue(panel.styles, "height") + index * 10} />
+            );
+          })}
+        </Layer>
       )}
       {Boolean(right) && right.length && (
-        <div className="right-side">
-          {right.map((panel, index) => (
-            <PanelEntity key={index} panel={panel} />
-          ))}
-        </div>
+        <Layer>
+          {right.map((panel, index) => {
+            rightY = rightY + getCssValue(panel.styles, "height");
+            return (
+              <PanelEntity key={index} panel={panel} x={window.innerWidth - getCssValue(panel.styles, "width") - 10} y={rightY - getCssValue(panel.styles, "height") + index * 10} />
+            );
+          })}
+        </Layer>
       )}
-    </div>
+      {Boolean(bottom) && bottom.length && (
+        <Layer>
+          {bottom.map((panel, index) => {
+            bottomX = bottomX + getCssValue(panel.styles, "width");
+            return (
+              <PanelEntity key={index} panel={panel} x={bottomX - getCssValue(panel.styles, "width") + index * 10} y={window.innerHeight - getCssValue(panel.styles, "height") - 10} />
+            );
+          })}
+        </Layer>
+      )}
+    </>
   );
 };
 export default Panel;
