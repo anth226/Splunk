@@ -7,7 +7,7 @@ const getCssValue = (styles, name) => {
   return parseInt(result);
 };
 
-const PanelEntity = ({ panel, x, y }) => {
+const PanelEntity = ({ panel, position, x, y }) => {
   const [ refLoading, setRefLoading ] = useState(false);
   const textRef = useRef(null);
 
@@ -18,7 +18,29 @@ const PanelEntity = ({ panel, x, y }) => {
   if (!isVisible) return null;
   console.log(panel.styles);
   return (
-    <>
+    <Group
+      draggable
+      dragBoundFunc={(pos) => {
+        let dragPos;
+        switch (position) {
+          case "top":
+          case "bottom":
+            dragPos = {
+              x: pos.x,
+              y: 0,
+            };
+            break;
+          case "right":
+          case "left":
+            dragPos = {
+              x: 0,
+              y: pos.y,
+            };
+            break;
+        }
+        return dragPos;
+      }}
+    >
       <Rect
         x={x}
         y={y}
@@ -41,7 +63,7 @@ const PanelEntity = ({ panel, x, y }) => {
         <Text y={20} text={`Type: ${panel.type}`} fontSize={16} />
         <Text y={40} text={`Title: ${panel.title}`} fontSize={16} />
       </Group>
-    </>
+    </Group>
   );
 };
 export default PanelEntity;

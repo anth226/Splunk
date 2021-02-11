@@ -14,6 +14,7 @@ const EntityList = () => {
 
   let textRef = useRef(null);
 
+  const width = 1920, height = 1080;
   const { entities, addEntityItem } = usePopulateEntities(setLoading);
   usePopulateDetails(selected, setPanels, setLoading);
   useEffect(() => {
@@ -43,8 +44,8 @@ const EntityList = () => {
       <Layer>
         <Text
           ref={textRef}
-          x={refLoading ? window.innerWidth / 2 - textRef.current.getWidth() / 2 : 0}
-          y={refLoading ? window.innerHeight / 2 - textRef.current.getHeight() / 2 : 0}
+          x={refLoading ? width / 2 - textRef.current.getWidth() / 2 : 0}
+          y={refLoading ? height / 2 - textRef.current.getHeight() / 2 : 0}
           fontSize={45}
           text="Loading"
           draggable
@@ -55,18 +56,18 @@ const EntityList = () => {
   }
   return (
     <>
-      <Panel panels={panels} selected={selected} />
       <Layer
         draggable
         scaleX={zoom}
         scaleY={zoom}
         onWheel={handleWheel}
       >
-        <Rect x={0} y={0} width={window.innerWidth} height={window.innerHeight} opacity={0} />
+        <Rect x={0} y={0} width={width} height={height} opacity={0} />
         {entities.map((item, index) => (
           <Entity key={index} item={item} setSelected={setSelected} />
         ))}
       </Layer>
+      <Panel panels={panels} selected={selected} />
     </>
   );
 };

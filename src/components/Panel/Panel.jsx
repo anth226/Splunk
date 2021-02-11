@@ -58,7 +58,8 @@ const getCssValue = (styles, name) => {
 };
 
 const Panel = ({ children, panels }) => {
-  let topX = 0, leftY = 0, rightY = 0, bottomX = 0;
+  const width = 1920, height = 1080;
+  let topX = 0, leftY = height, rightY = 0, bottomX = width;
 
   if (!panels) return <Layer></Layer>;
   const { left, right, bottom, top } = panels;
@@ -71,7 +72,7 @@ const Panel = ({ children, panels }) => {
           {top.map((panel, index) => {
             topX = topX + getCssValue(panel.styles, "width");
             return (
-              <PanelEntity key={index} panel={panel} x={topX - getCssValue(panel.styles, "width") + index * 10} y={10} />
+              <PanelEntity key={index} panel={panel} position="top" x={topX - getCssValue(panel.styles, "width") + (index + 1) * 10} y={10} />
             );
           })}
         </Layer>
@@ -79,9 +80,9 @@ const Panel = ({ children, panels }) => {
       {Boolean(left) && left.length && (
         <Layer>
           {left.map((panel, index) => {
-            leftY = leftY + getCssValue(panel.styles, "height");
+            leftY = leftY - getCssValue(panel.styles, "height");
             return (
-              <PanelEntity key={index} panel={panel} x={10} y={leftY - getCssValue(panel.styles, "height") + index * 10} />
+              <PanelEntity key={index} panel={panel} position="left" x={10} y={leftY - (index + 1) * 10} />
             );
           })}
         </Layer>
@@ -91,7 +92,7 @@ const Panel = ({ children, panels }) => {
           {right.map((panel, index) => {
             rightY = rightY + getCssValue(panel.styles, "height");
             return (
-              <PanelEntity key={index} panel={panel} x={window.innerWidth - getCssValue(panel.styles, "width") - 10} y={rightY - getCssValue(panel.styles, "height") + index * 10} />
+              <PanelEntity key={index} panel={panel} position="right" x={width - getCssValue(panel.styles, "width") - 10} y={rightY - getCssValue(panel.styles, "height") + (index + 1) * 10} />
             );
           })}
         </Layer>
@@ -99,9 +100,9 @@ const Panel = ({ children, panels }) => {
       {Boolean(bottom) && bottom.length && (
         <Layer>
           {bottom.map((panel, index) => {
-            bottomX = bottomX + getCssValue(panel.styles, "width");
+            bottomX = bottomX - getCssValue(panel.styles, "width");
             return (
-              <PanelEntity key={index} panel={panel} x={bottomX - getCssValue(panel.styles, "width") + index * 10} y={window.innerHeight - getCssValue(panel.styles, "height") - 10} />
+              <PanelEntity key={index} panel={panel} position="bottom" x={bottomX - (index + 1) * 10} y={height - getCssValue(panel.styles, "height") - 10} />
             );
           })}
         </Layer>
