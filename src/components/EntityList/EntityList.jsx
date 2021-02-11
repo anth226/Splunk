@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Layer, Text } from 'react-konva';
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import { Layer, Text, Rect } from 'react-konva';
 import { usePopulateEntities } from "./usePopulateEntities";
-import "./EntityList.css";
 import Panel from "../Panel/Panel";
 import Entity from "../Entity/Entity";
 import { usePopulateDetails } from "./usePopulateDetails";
@@ -9,18 +8,35 @@ import { usePopulateDetails } from "./usePopulateDetails";
 const EntityList = () => {
   const [selected, setSelected] = useState("");
   const [panels, setPanels] = useState();
-  const [loading, setLoading] = useState("false");
-  const [ refLoading, setRefLoading ] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [refLoading, setRefLoading] = useState(false);
+  const [zoom, setZoom] = useState(1);
 
-  const textRef = useRef(null);
+  let textRef = useRef(null);
 
   const { entities, addEntityItem } = usePopulateEntities(setLoading);
   usePopulateDetails(selected, setPanels, setLoading);
   useEffect(() => {
     setPanels();
   }, [selected]);
+  useEffect(() => {
+    if (loading) setRefLoading(true);
+  }, [textRef.current, loading]);
+  useEffect(() => {
+    if (loading == false) {
+      setRefLoading(false);
+      textRef.current = null;
+    }
+  }, [loading]);
 
-  useEffect(() => setRefLoading(true), [textRef]);
+  const handleWheel = useCallback((e) => {
+    e.evt.preventDefault();
+    if (e.evt.deltaY < 0) {
+      setZoom(zoom * 1.05);
+    } else {
+      setZoom(zoom / 1.05);
+    }
+  });
 
   if (loading) {
     return (
@@ -38,11 +54,20 @@ const EntityList = () => {
     );
   }
   return (
-    <Layer>
-      {entities.map((item, index) => (
-        <Entity key={index} item={item} setSelected={setSelected} />
-      ))}
-    </Layer>
+    <>
+      <Panel panels={panels} selected={selected} />
+      <Layer
+        draggable
+        scaleX={zoom}
+        scaleY={zoom}
+        onWheel={handleWheel}
+      >
+        <Rect x={0} y={0} width={window.innerWidth} height={window.innerHeight} opacity={0} />
+        {entities.map((item, index) => (
+          <Entity key={index} item={item} setSelected={setSelected} />
+        ))}
+      </Layer>
+    </>
   );
 };
 export default EntityList;
