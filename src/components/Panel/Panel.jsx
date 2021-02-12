@@ -41,7 +41,7 @@ const getWraper = (panels) => {
     }
   }
 
-  let wrapWidth = Math.max(tw + rw, bw + lw, rw + lw + 812);
+  let wrapWidth = Math.max(tw + rw, bw + lw, rw + lw + 812, window.innerWidth);
   let wrapHeight = Math.max(th + lh, bh + rh, th + bh + 812);
   return {
     wrapWidth,
@@ -57,14 +57,12 @@ const getCssValue = (styles, name) => {
   return parseInt(result);
 };
 
-const Panel = ({ children, panels }) => {
-  const width = 1920, height = 1080;
-  let topX = 0, leftY = height, rightY = 0, bottomX = width;
-
+const Panel = ({ panels, handleSize }) => {
   if (!panels) return <Layer></Layer>;
   const { left, right, bottom, top } = panels;
   let wraper = getWraper(panels);
-
+  let topX = 0, leftY = wraper.wrapHeight, rightY = 0, bottomX = wraper.wrapWidth;
+  handleSize(wraper);
   return (
     <>
       {Boolean(top) && top.length && (
@@ -92,7 +90,7 @@ const Panel = ({ children, panels }) => {
           {right.map((panel, index) => {
             rightY = rightY + getCssValue(panel.styles, "height");
             return (
-              <PanelEntity key={index} panel={panel} position="right" x={width - getCssValue(panel.styles, "width") - 10} y={rightY - getCssValue(panel.styles, "height") + (index + 1) * 10} />
+              <PanelEntity key={index} panel={panel} position="right" x={wraper.wrapWidth - getCssValue(panel.styles, "width") - 10} y={rightY - getCssValue(panel.styles, "height") + (index + 1) * 10} />
             );
           })}
         </Layer>
@@ -102,7 +100,7 @@ const Panel = ({ children, panels }) => {
           {bottom.map((panel, index) => {
             bottomX = bottomX - getCssValue(panel.styles, "width");
             return (
-              <PanelEntity key={index} panel={panel} position="bottom" x={bottomX - (index + 1) * 10} y={height - getCssValue(panel.styles, "height") - 10} />
+              <PanelEntity key={index} panel={panel} position="bottom" x={bottomX - (index + 1) * 10} y={wraper.wrapHeight - getCssValue(panel.styles, "height") - 10} />
             );
           })}
         </Layer>

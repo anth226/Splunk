@@ -1,14 +1,22 @@
-import "./App.css";
-import EntityList from "./components/EntityList/EntityList";
+import React, { useState, useCallback } from 'react';
 import { Stage } from 'react-konva';
+import EntityList from "./components/EntityList/EntityList";
+import "./App.css";
 
 function App() {
-  const width = 1920, height = 1080;
+  const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
+
+  const handleSize = useCallback((size) => {
+    console.log('here', size);
+    setWidth(size.wrapWidth);
+    setHeight(size.wrapHeight);
+  });
 
   return (
     <div className="App">
       <Stage width={width} height={height}>
-        <EntityList />
+        <EntityList handleSize={handleSize} />
       </Stage>
     </div>
   );

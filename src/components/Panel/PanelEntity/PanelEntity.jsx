@@ -10,13 +10,11 @@ const getCssValue = (styles, name) => {
 const PanelEntity = ({ panel, position, x, y }) => {
   const [ refLoading, setRefLoading ] = useState(false);
   const textRef = useRef(null);
-
-  useEffect(() => { setRefLoading(true); console.log(textRef, textRef.current.getWidth(), textRef.current.getHeight()); }, [textRef]);
-
-  console.log(panel);
   const isVisible = panel.visible === "True";
+
+  useEffect(() => setRefLoading(true), [textRef]);
+
   if (!isVisible) return null;
-  console.log(panel.styles);
   return (
     <Group
       draggable
