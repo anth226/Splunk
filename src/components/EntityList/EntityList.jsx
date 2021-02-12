@@ -5,7 +5,7 @@ import Panel from "../Panel/Panel";
 import Entity from "../Entity/Entity";
 import { usePopulateDetails } from "./usePopulateDetails";
 
-const EntityList = () => {
+const EntityList = ({ handleSize }) => {
   const [selected, setSelected] = useState("");
   const [panels, setPanels] = useState();
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ const EntityList = () => {
 
   let textRef = useRef(null);
 
-  const width = 1920, height = 1080;
+  const width = window.innerWidth, height = window.innerHeight;
   const { entities, addEntityItem } = usePopulateEntities(setLoading);
   usePopulateDetails(selected, setPanels, setLoading);
   useEffect(() => {
@@ -48,8 +48,6 @@ const EntityList = () => {
           y={refLoading ? height / 2 - textRef.current.getHeight() / 2 : 0}
           fontSize={45}
           text="Loading"
-          draggable
-          onDragStart={(evt) => console.log('text', evt)}
         />
       </Layer>
     );
@@ -67,7 +65,7 @@ const EntityList = () => {
           <Entity key={index} item={item} setSelected={setSelected} />
         ))}
       </Layer>
-      <Panel panels={panels} selected={selected} />
+      <Panel panels={panels} selected={selected} handleSize={handleSize} />
     </>
   );
 };
