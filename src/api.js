@@ -2,7 +2,9 @@ import axios from "axios";
 
 export const api = axios.create({
   credentials: "same-origin",
-  baseURL: "https://52.243.97.180:8089/servicesNS/nobody/apmTest2/api/sets",
+  baseURL: process.env.REACT_APP_STATE === 'development'
+    ? "https://52.243.97.180:8089/servicesNS/nobody/apmTest2/api/sets"
+    : `${window.location.href.slice(0, (window.location.href.length - 1))}:8089/servicesNS/nobody/apmTest2/api/sets`,
   headers: {
     Authorization: `Basic ${Buffer.from(`oleksi:sHs7&%s5B0^5`, "utf8").toString(
       "base64"
