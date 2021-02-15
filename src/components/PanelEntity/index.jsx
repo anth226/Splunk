@@ -49,7 +49,7 @@ const PanelEntity = ({ panel, position, x, y }) => {
         height={getCssValue(panel.styles, 'height')}
         fill={'#ffffff'}
         opacity={0.8}
-        strokeWidth={2}
+        strokeWidth={panel.styles.border === 'True' ? 2 : 0}
         stroke={`#${panel.styles.borderColor}`}
         shadowBlur={10}
         shadowOpacity={0.6}
