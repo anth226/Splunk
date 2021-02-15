@@ -8,8 +8,10 @@ function App() {
   const [height, setHeight] = useState(window.innerHeight);
 
   const handleSize = ((size) => {
-    setWidth(size.wrapWidth);
-    setHeight(size.wrapHeight);
+    if ((size.wrapWidth && (size.wrapWidth !== width)) || (size.wrapHeight && (size.wrapHeight !== height))) {
+      setWidth(parseInt(size.wrapWidth));
+      setHeight(parseInt(size.wrapHeight));
+    }
   });
 
   return (
