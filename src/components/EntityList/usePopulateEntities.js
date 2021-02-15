@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { getAll } from "../../api";
+import { useEffect, useState } from 'react';
+import { getAll } from '../../api';
 
-//const initialPage = "/apmPage/entities/page1";
-const initialPage = "/apmPage/entities/.*";
+//const initialPage = '/apmPage/entities/page1';
+const initialPage = '/apmPage/entities/.*';
 
 export const usePopulateEntities = (setLoading) => {
   const [entities, setEntities] = useState([]);
+
   useEffect(() => {
     setLoading(true);
     getAll(initialPage)
@@ -21,6 +22,7 @@ export const usePopulateEntities = (setLoading) => {
         console.log(`Error-${e}`);
       });
   }, [setLoading]);
+
   const addEntityItem = (entity) => setEntities((state) => [...state, entity]);
 
   return { entities, addEntityItem };
