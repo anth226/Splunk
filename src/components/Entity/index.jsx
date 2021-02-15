@@ -1,12 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import { Group, Circle, Text } from 'react-konva';
-import { getBasicParams } from "./getBasicParams";
+
+const getBasicParams = (item) => {
+  return {
+    left: item.rectDotLeft,
+    top: item.rectDotTop,
+    name: item.entityName,
+    property: item.setName,
+  };
+};
+
 const Entity = ({ setSelected, item }) => {
-  const [ objectHover, setObjectHover ] = useState(false);
-  const [ refLoading, setRefLoading ] = useState(false);
+  const [objectHover, setObjectHover] = useState(false);
+  const [refLoading, setRefLoading] = useState(false);
 
   const textRef = useRef(null);
-  const { left, top, name, property } = getBasicParams(item);
+  const { left, top, name } = getBasicParams(item);
   const radius = 75;
 
   useEffect(() => setRefLoading(true), [textRef]);
@@ -44,4 +53,5 @@ const Entity = ({ setSelected, item }) => {
     </Group>
   );
 };
+
 export default Entity;
