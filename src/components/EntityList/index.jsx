@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef } from 'react';
 import { Layer, Text, Rect } from 'react-konva';
-import { usePopulateEntities } from "./usePopulateEntities";
-import Panel from "../Panel/Panel";
-import Entity from "../Entity/Entity";
-import { usePopulateDetails } from "./usePopulateDetails";
+import { usePopulateEntities } from './usePopulateEntities';
+import Panel from '../Panel';
+import Entity from '../Entity';
+import { usePopulateDetails } from './usePopulateDetails';
 
 const EntityList = ({ handleSize }) => {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState('');
   const [panels, setPanels] = useState();
   const [loading, setLoading] = useState(false);
   const [refLoading, setRefLoading] = useState(false);
@@ -15,22 +15,19 @@ const EntityList = ({ handleSize }) => {
   let textRef = useRef(null);
 
   const width = window.innerWidth, height = window.innerHeight;
-  const { entities, addEntityItem } = usePopulateEntities(setLoading);
+  const { entities } = usePopulateEntities(setLoading);
+  
   usePopulateDetails(selected, setPanels, setLoading);
+  useEffect(() => setPanels(), [selected]);
+  useEffect(() => { if (loading) setRefLoading(true); }, [textRef, loading]);
   useEffect(() => {
-    setPanels();
-  }, [selected]);
-  useEffect(() => {
-    if (loading) setRefLoading(true);
-  }, [textRef.current, loading]);
-  useEffect(() => {
-    if (loading == false) {
+    if (loading === false) {
       setRefLoading(false);
       textRef.current = null;
     }
   }, [loading]);
 
-  const handleWheel = useCallback((e) => {
+  const handleWheel = ((e) => {
     e.evt.preventDefault();
     if (e.evt.deltaY < 0) {
       setZoom(zoom * 1.05);
@@ -47,11 +44,12 @@ const EntityList = ({ handleSize }) => {
           x={refLoading ? width / 2 - textRef.current.getWidth() / 2 : 0}
           y={refLoading ? height / 2 - textRef.current.getHeight() / 2 : 0}
           fontSize={45}
-          text="Loading"
+          text='Loading'
         />
       </Layer>
     );
   }
+
   return (
     <>
       <Layer
@@ -69,4 +67,5 @@ const EntityList = ({ handleSize }) => {
     </>
   );
 };
+
 export default EntityList;
