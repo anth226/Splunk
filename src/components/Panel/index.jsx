@@ -92,7 +92,7 @@ const Panel = ({ panels, handleSize }) => {
       {Boolean(panels.left) && panels.left.length && (
         <Layer>
           {panels.left.map((panel, index) => {
-            if (index === 0) leftY = wraper.wrapHeight;
+            if (index === 0 && wraper.wrapHeight) leftY = wraper.wrapHeight;
             leftY = leftY - getCssValue(panel.styles, 'height');
             return (
               <PanelEntity
@@ -125,7 +125,7 @@ const Panel = ({ panels, handleSize }) => {
       {Boolean(panels.bottom) && panels.bottom.length && (
         <Layer>
           {panels.bottom.map((panel, index) => {
-            if (index === 0) bottomX = wraper.wrapWidth;
+            if (index === 0 && wraper.wrapWidth) bottomX = wraper.wrapWidth;
             bottomX = bottomX - getCssValue(panel.styles, 'width');
             return (
               <PanelEntity
