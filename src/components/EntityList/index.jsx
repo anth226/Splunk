@@ -11,13 +11,15 @@ const EntityList = ({ handleSize }) => {
   const [loading, setLoading] = useState(false);
   const [refLoading, setRefLoading] = useState(false);
   const [zoom, setZoom] = useState(1);
+  const [layerWidth, setLayerWidth] = useState(0);
+  const [object, setObject] = useState(null);
 
   let textRef = useRef(null);
 
   const width = window.innerWidth, height = window.innerHeight;
   const { entities } = usePopulateEntities(setLoading);
-  
-  usePopulateDetails(selected, setPanels, setLoading);
+
+  usePopulateDetails(selected, setPanels, setLoading, setObject);
   useEffect(() => setPanels(), [selected]);
   useEffect(() => { if (loading) setRefLoading(true); }, [textRef, loading]);
   useEffect(() => {
@@ -35,6 +37,8 @@ const EntityList = ({ handleSize }) => {
       setZoom(zoom / 1.05);
     }
   });
+
+  const checkSize = ((size) => setLayerWidth(size));
 
   if (loading) {
     return (
@@ -63,7 +67,7 @@ const EntityList = ({ handleSize }) => {
           <Entity key={index} item={item} setSelected={setSelected} />
         ))}
       </Layer>
-      <Panel panels={panels} selected={selected} handleSize={handleSize} />
+      <Panel panels={panels} selected={selected} handleSize={handleSize} checkSize={checkSize} />
     </>
   );
 };
