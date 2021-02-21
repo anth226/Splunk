@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Layer, Text, Rect } from 'react-konva';
 import { usePopulateEntities } from './usePopulateEntities';
-import Panel from '../Panel';
-import Entity from '../Entity';
-import OverLayer from '../OverLayer';
+import Panel from 'components/Panel';
+import Entity from 'components/Entity';
+import OverLayer from 'components/OverLayer';
 import { usePopulateDetails } from './usePopulateDetails';
 
 const EntityList = ({ handleSize }) => {
