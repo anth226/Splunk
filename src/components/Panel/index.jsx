@@ -62,12 +62,17 @@ const getCssValue = (styles, name) => {
   return parseInt(result);
 };
 
-const Panel = ({ panels, handleSize }) => {
+const Panel = ({ panels, handleSize, checkSize }) => {
   const [wraper, setWraper] = useState({});
   let topX = 0 , leftY = 0, rightY = 0, bottomX = 0;
 
   useEffect(() => { if (panels) setWraper(getWraper(panels)); }, [panels]);
-  useEffect(() => { if (wraper.wrapWidth) handleSize(wraper); }, [wraper, handleSize]);
+  useEffect(() => {
+    if (wraper.wrapWidth) {
+      handleSize(wraper);
+      checkSize(wraper.wrapWidth);
+    }
+  }, [wraper, handleSize, checkSize]);
 
   if (!panels) return null;
 
