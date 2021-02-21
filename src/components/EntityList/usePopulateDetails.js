@@ -76,13 +76,14 @@ const retrievePanels = async (attributes) => {
   };
 };
 
-export const usePopulateDetails = (selected, setPanels, setLoading) => {
+export const usePopulateDetails = (selected, setPanels, setLoading, setObject) => {
   useEffect(() => {
     if (!selected) return;
     setLoading(true);
     const { setName, entityName } = selected;
     const requests = async () => {
       const firstsResponse = await getDetails(setName, entityName);
+      setObject(firstsResponse);
 
       const panelEntity = getEntityNameForPanelDetails(
         firstsResponse,
@@ -95,5 +96,5 @@ export const usePopulateDetails = (selected, setPanels, setLoading) => {
       setLoading(false);
     };
     requests();
-  }, [selected, setPanels, setLoading]);
+  }, [selected, setPanels, setLoading, setObject]);
 };
