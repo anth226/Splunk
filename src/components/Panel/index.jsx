@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layer } from 'react-konva';
-import PanelEntity from '../PanelEntity';
+import PanelEntity from 'components/PanelEntity';
 
 const getWraper = (panels) => {
   const { left, right, bottom, top } = panels;

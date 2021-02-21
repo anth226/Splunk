@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Stage } from 'react-konva';
-import EntityList from './components/EntityList';
+import EntityList from 'components/EntityList';
 import './App.css';
 
 function App() {
