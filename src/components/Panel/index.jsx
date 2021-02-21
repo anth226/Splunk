@@ -72,74 +72,66 @@ const Panel = ({ panels, handleSize }) => {
   if (!panels) return null;
 
   return (
-    <>
+    <Layer>
       {Boolean(panels.top) && panels.top.length && (
-        <Layer>
-          {panels.top.map((panel, index) => {
-            topX = topX + getCssValue(panel.styles, 'width');
-            return (
-              <PanelEntity
-                key={index}
-                panel={panel}
-                position='top'
-                x={topX - getCssValue(panel.styles, 'width') + (index + 1) * 10}
-                y={10}
-              />
-            );
-          })}
-        </Layer>
+        panels.top.map((panel, index) => {
+          topX = topX + getCssValue(panel.styles, 'width');
+          return (
+            <PanelEntity
+              key={index}
+              panel={panel}
+              position='top'
+              x={topX - getCssValue(panel.styles, 'width') + (index + 1) * 10}
+              y={10}
+            />
+          );
+        })
       )}
       {Boolean(panels.left) && panels.left.length && (
-        <Layer>
-          {panels.left.map((panel, index) => {
-            if (index === 0 && wraper.wrapHeight) leftY = wraper.wrapHeight;
-            leftY = leftY - getCssValue(panel.styles, 'height');
-            return (
-              <PanelEntity
-                key={index}
-                panel={panel}
-                position='left'
-                x={10}
-                y={leftY - (index + 1) * 10}
-              />
-            );
-          })}
-        </Layer>
+        panels.left.map((panel, index) => {
+          if (index === 0 && wraper.wrapHeight) leftY = wraper.wrapHeight;
+          leftY = leftY - getCssValue(panel.styles, 'height');
+          return (
+            <PanelEntity
+              key={index}
+              panel={panel}
+              position='left'
+              x={10}
+              y={leftY - (index + 1) * 10}
+            />
+          );
+        })
       )}
       {Boolean(panels.right) && panels.right.length && (
-        <Layer>
-          {panels.right.map((panel, index) => {
-            rightY = rightY + getCssValue(panel.styles, 'height');
-            return (
-              <PanelEntity
-                key={index}
-                panel={panel}
-                position='right'
-                x={wraper.wrapWidth ? wraper.wrapWidth - getCssValue(panel.styles, 'width') - 10 : -getCssValue(panel.styles, 'width') - 10}
-                y={rightY - getCssValue(panel.styles, 'height') + (index + 1) * 10}
-              />
-            );
-          })}
-        </Layer>
+        panels.right.map((panel, index) => {
+          rightY = rightY + getCssValue(panel.styles, 'height');
+          return (
+            <PanelEntity
+              key={index}
+              panel={panel}
+              position='right'
+              x={wraper.wrapWidth ? wraper.wrapWidth - getCssValue(panel.styles, 'width') - 10 : -getCssValue(panel.styles, 'width') - 10}
+              y={rightY - getCssValue(panel.styles, 'height') + (index + 1) * 10}
+            />
+          );
+        })
       )}
       {Boolean(panels.bottom) && panels.bottom.length && (
-        <Layer>
-          {panels.bottom.map((panel, index) => {
-            if (index === 0 && wraper.wrapWidth) bottomX = wraper.wrapWidth;
-            bottomX = bottomX - getCssValue(panel.styles, 'width');
-            return (
-              <PanelEntity
-                key={index}
-                panel={panel}
-                position='bottom'
-                x={bottomX - (index + 1) * 10}
-                y={wraper.wrapHeight ? wraper.wrapHeight - getCssValue(panel.styles, 'height') - 10 : -getCssValue(panel.styles, 'height') - 10}
-              />
-            );
-          })}
-        </Layer>
+        panels.bottom.map((panel, index) => {
+          if (index === 0 && wraper.wrapWidth) bottomX = wraper.wrapWidth;
+          bottomX = bottomX - getCssValue(panel.styles, 'width');
+          return (
+            <PanelEntity
+              key={index}
+              panel={panel}
+              position='bottom'
+              x={bottomX - (index + 1) * 10}
+              y={wraper.wrapHeight ? wraper.wrapHeight - getCssValue(panel.styles, 'height') - 10 : -getCssValue(panel.styles, 'height') - 10}
+            />
+          );
+        })
       )}
-    </>
+    </Layer>
   );
 };
 
