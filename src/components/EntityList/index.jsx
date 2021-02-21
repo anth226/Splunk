@@ -3,6 +3,7 @@ import { Layer, Text, Rect } from 'react-konva';
 import { usePopulateEntities } from './usePopulateEntities';
 import Panel from '../Panel';
 import Entity from '../Entity';
+import OverLayer from '../OverLayer';
 import { usePopulateDetails } from './usePopulateDetails';
 
 const EntityList = ({ handleSize }) => {
@@ -68,6 +69,7 @@ const EntityList = ({ handleSize }) => {
         ))}
       </Layer>
       <Panel panels={panels} selected={selected} handleSize={handleSize} checkSize={checkSize} />
+      <OverLayer width={layerWidth} data={object} entity={selected} />
     </>
   );
 };
