@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { getDetails } from '../../api';
 
 const getAttributes = (entity) => {
@@ -76,25 +75,23 @@ const retrievePanels = async (attributes) => {
   };
 };
 
-export const usePopulateDetails = (selected, setPanels, setLoading, setObject) => {
-  useEffect(() => {
-    if (!selected) return;
-    setLoading(true);
-    const { setName, entityName } = selected;
-    const requests = async () => {
-      const firstsResponse = await getDetails(setName, entityName);
-      setObject(firstsResponse);
+export const populateDetails = (selected, setPanels, setLoading, setObject) => {
+  if (!selected) return;
+  setLoading(true);
+  const { setName, entityName } = selected;
+  const requests = async () => {
+    const firstsResponse = await getDetails(setName, entityName);
+    setObject(firstsResponse);
 
-      const panelEntity = getEntityNameForPanelDetails(
-        firstsResponse,
-        setLoading
-      );
-      if (!panelEntity) return;
-      const panelsReg = await getDetails('object', panelEntity);
-      const panels = await retrievePanels(getAttributes(panelsReg));
-      setPanels(panels);
-      setLoading(false);
-    };
-    requests();
-  }, [selected, setPanels, setLoading, setObject]);
+    const panelEntity = getEntityNameForPanelDetails(
+      firstsResponse,
+      setLoading
+    );
+    if (!panelEntity) return;
+    const panelsReg = await getDetails('object', panelEntity);
+    const panels = await retrievePanels(getAttributes(panelsReg));
+    setPanels(panels);
+    setLoading(false);
+  };
+  requests();
 };

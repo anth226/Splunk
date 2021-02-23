@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Layer, Group, Rect, Text } from 'react-konva';
+import { ObjectContext } from 'context/ObjectContext';
 
-const OverLayer = ({ width, data, entity }) => {
+const OverLayer = ({ data, entity }) => {
   const [refLoading, setRefLoading] = useState(false);
+  const { state } = useContext(ObjectContext);
   const textRef = useRef(null);
 
   useEffect(() => setRefLoading(true), [textRef]);
@@ -21,7 +23,7 @@ const OverLayer = ({ width, data, entity }) => {
   return (
     <Layer draggable>
       <Group
-        x={width - 210}
+        x={state.width - 210}
         y={200}
       >
         <Rect

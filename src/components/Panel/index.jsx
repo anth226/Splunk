@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Layer } from 'react-konva';
+import { ObjectContext } from 'context/ObjectContext';
 import PanelEntity from 'components/PanelEntity';
 
 const getWraper = (panels) => {
@@ -62,17 +63,13 @@ const getCssValue = (styles, name) => {
   return parseInt(result);
 };
 
-const Panel = ({ panels, handleSize, checkSize }) => {
+const Panel = ({ panels }) => {
   const [wraper, setWraper] = useState({});
+  const { setSize } = useContext(ObjectContext);
   let topX = 0 , leftY = 0, rightY = 0, bottomX = 0;
 
   useEffect(() => { if (panels) setWraper(getWraper(panels)); }, [panels]);
-  useEffect(() => {
-    if (wraper.wrapWidth) {
-      handleSize(wraper);
-      checkSize(wraper.wrapWidth);
-    }
-  }, [wraper, handleSize, checkSize]);
+  useEffect(() => { if (wraper.wrapWidth) setSize(wraper); }, [wraper]);
 
   if (!panels) return null;
 

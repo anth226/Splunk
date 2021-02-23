@@ -1,27 +1,23 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { Layer, Text, Rect } from 'react-konva';
-import { usePopulateEntities } from './usePopulateEntities';
+import { ObjectContext } from 'context/ObjectContext';
 import Panel from 'components/Panel';
 import Entity from 'components/Entity';
 import OverLayer from 'components/OverLayer';
-import { usePopulateDetails } from './usePopulateDetails';
+import { populateDetails } from './usePopulateDetails';
 
-const EntityList = ({ handleSize }) => {
+function EntityList() {
   const [selected, setSelected] = useState('');
   const [panels, setPanels] = useState();
   const [loading, setLoading] = useState(false);
   const [refLoading, setRefLoading] = useState(false);
   const [zoom, setZoom] = useState(1);
-  const [layerWidth, setLayerWidth] = useState(0);
   const [object, setObject] = useState(null);
+  const { state } = useContext(ObjectContext);
 
   let textRef = useRef(null);
 
-  const width = window.innerWidth, height = window.innerHeight;
-  const { entities } = usePopulateEntities(setLoading);
-
-  usePopulateDetails(selected, setPanels, setLoading, setObject);
-  useEffect(() => setPanels(), [selected]);
+  useEffect(() => { if (selected !== '') populateDetails(selected, setPanels, setLoading, setObject); }, [selected, setPanels, setLoading, setObject]);
   useEffect(() => { if (loading) setRefLoading(true); }, [textRef, loading]);
   useEffect(() => {
     if (loading === false) {
@@ -39,15 +35,13 @@ const EntityList = ({ handleSize }) => {
     }
   });
 
-  const checkSize = ((size) => setLayerWidth(size));
-
   if (loading) {
     return (
       <Layer>
         <Text
           ref={textRef}
-          x={refLoading ? width / 2 - textRef.current.getWidth() / 2 : 0}
-          y={refLoading ? height / 2 - textRef.current.getHeight() / 2 : 0}
+          x={refLoading ? state.width / 2 - textRef.current.getWidth() / 2 : 0}
+          y={refLoading ? state.height / 2 - textRef.current.getHeight() / 2 : 0}
           fontSize={45}
           text='Loading'
         />
@@ -63,13 +57,13 @@ const EntityList = ({ handleSize }) => {
         scaleY={zoom}
         onWheel={handleWheel}
       >
-        <Rect x={0} y={0} width={width} height={height} opacity={0} />
-        {entities.map((item, index) => (
+        <Rect x={0} y={0} width={state.width} height={state.height} opacity={0} />
+        {state.entities.map((item, index) => (
           <Entity key={index} item={item} setSelected={setSelected} />
         ))}
       </Layer>
-      <Panel panels={panels} selected={selected} handleSize={handleSize} checkSize={checkSize} />
-      <OverLayer width={layerWidth} data={object} entity={selected} />
+      <Panel panels={panels} />
+      <OverLayer data={object} entity={selected} />
     </>
   );
 };
